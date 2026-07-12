@@ -94,6 +94,7 @@ export interface VideoCardProps {
     episodes_titles?: string[];
   };
   onBeforeNavigate?: () => void;
+  isDuanju?: boolean; // 短剧标识，用于播放页跳过"上次播放到"提示
 }
 
 export type VideoCardHandle = {
@@ -134,6 +135,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
       totalTime,
       cmsData,
       onBeforeNavigate,
+      isDuanju,
     }: VideoCardProps,
     ref
   ) {
@@ -447,7 +449,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
           isAggregate ? '&prefer=true' : ''
         }${
           actualQuery ? `&stitle=${encodeURIComponent(actualQuery.trim())}` : ''
-        }${actualSearchType ? `&stype=${actualSearchType}` : ''}`;
+        }${actualSearchType ? `&stype=${actualSearchType}` : ''}${isDuanju ? '&duanju=1' : ''}`;
 
         if (isCurrentlyOnPlayPage) {
           // 在 play 页面内，添加 _reload 参数强制刷新
@@ -471,6 +473,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
       actualQuery,
       actualSearchType,
       onBeforeNavigate,
+      isDuanju,
     ]);
 
     // 新标签页播放处理函数
@@ -509,7 +512,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
           isAggregate ? '&prefer=true' : ''
         }${
           actualQuery ? `&stitle=${encodeURIComponent(actualQuery.trim())}` : ''
-        }${actualSearchType ? `&stype=${actualSearchType}` : ''}`;
+        }${actualSearchType ? `&stype=${actualSearchType}` : ''}${isDuanju ? '&duanju=1' : ''}`;
         window.open(url, '_blank');
       }
     }, [
@@ -524,6 +527,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
       actualQuery,
       actualSearchType,
       onBeforeNavigate,
+      isDuanju,
     ]);
 
     // 检查搜索结果的收藏状态

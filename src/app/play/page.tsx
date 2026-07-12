@@ -8736,6 +8736,12 @@ function PlayPageClient() {
           // 条件：当前播放时间 < 10秒 且 播放记录时间 > 10秒
           const checkPlayRecordJump = async () => {
             try {
+              // 短剧不显示"上次播放到"提示（短剧单集太短，提示意义不大）
+              if (searchParams.get('duanju') === '1') {
+                playRecordJumpInitialCheckRef.current = false;
+                return;
+              }
+
               // 仅在进入播放后的首次检查时处理，避免本次会话新生成的记录触发恢复按钮
               if (!playRecordJumpInitialCheckRef.current) {
                 return;
